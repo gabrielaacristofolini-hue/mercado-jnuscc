@@ -70,7 +70,9 @@ code { font-family: var(--f-mono); font-size: 12.5px; background: var(--bg); pad
 .base ul { margin: 0; padding-left: 18px; display: grid; gap: 2px; font-size: 14px; }
 
 /* Competitor cards */
-.comps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.comps { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.comp-url { font-family: var(--f-mono); font-size: 12.5px; color: var(--accent); text-decoration: none; word-break: break-all; margin-top: -6px; }
+.comp-url:hover, .comp-url:focus-visible { text-decoration: underline; outline: none; }
 .comp { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
 .comp-head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
 .comp h3 { margin: 0; font-size: 16px; font-weight: 600; }
@@ -142,8 +144,9 @@ footer ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px;
       </ul>
     </div>
     <div class="comps">
-      <div class="comp wide">
+      <div class="comp">
         <div class="comp-head"><h3>Utua USA<small>US · concorrente direto</small></h3><span class="pill unk">Monetização não verificada</span></div>
+        <a class="comp-url" href="https://utua.com.br/descubra/usa-cc-quiz-utua-gg-qb/" target="_blank" rel="noopener">utua.com.br/descubra/usa-cc-quiz-utua-gg-qb/</a>
         <ol class="qs">
           <li><b>What is most important in a credit card for you?</b><span>High limit · Immediate credit · No credit check · Free annuity · Airline miles · Cashback</span></li>
           <li><b>Which group do you fit in?</b><span>Employee · Unemployed · Student · Entrepreneur · Retired · Self-employed · Public servant · Tenderer</span></li>
@@ -153,38 +156,8 @@ footer ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px;
         <p class="qnote">Depois da última pergunta, pede o nome antes de redirecionar.</p>
       </div>
       <div class="comp">
-        <div class="comp-head"><h3>Eu Sou o Melhor<small>BR</small></h3><span class="pill yes">Monetiza</span></div>
-        <ul>
-          <li>Interstitial GAM já definido na etapa 1, mais rewarded e offerwall.</li>
-          <li>Quiz de uma pergunta por página ("Quanto de limite você precisa?").</li>
-        </ul>
-      </div>
-      <div class="comp">
-        <div class="comp-head"><h3>Creditis<small>BR</small></h3><span class="pill yes">Monetiza</span></div>
-        <ul>
-          <li>Formulário direto (nome, e-mail, celular), sem quiz.</li>
-          <li>Pergunta qual benefício a pessoa quer: anuidade grátis, milhas, pontos, internacional, cashback ou consignado.</li>
-          <li>Interstitial e rewarded disparados no envio do formulário.</li>
-        </ul>
-      </div>
-      <div class="comp">
-        <div class="comp-head"><h3>Poupdin<small>BR</small></h3><span class="pill yes">Monetiza</span></div>
-        <ul>
-          <li>Quiz curto (valor → prazo) com barra de progresso.</li>
-          <li>Tela "Pronto! Encontramos…" antes do clique final.</li>
-          <li>Anúncio AdSeleto no CTA final, com aviso prévio na tela.</li>
-        </ul>
-      </div>
-      <div class="comp">
-        <div class="comp-head"><h3>Trouverfinan<small>FR</small></h3><span class="pill yes">Monetiza</span></div>
-        <ul>
-          <li>Quiz de 2 perguntas, uma URL por etapa.</li>
-          <li>Pede nome e e-mail antes do resultado.</li>
-          <li>Rewarded como pedágio: "assista um anúncio para ver a recomendação".</li>
-        </ul>
-      </div>
-      <div class="comp">
         <div class="comp-head"><h3>Altotiete<small>BR</small></h3><span class="pill no">Não monetiza</span></div>
+        <a class="comp-url" href="https://quiz.altotieteweb.com.br/" target="_blank" rel="noopener">quiz.altotieteweb.com.br/</a>
         <ol class="qs">
           <li><b>O que é mais importante para você?</b><span>Fácil aprovação · Limite alto · Sem consulta SPC/Serasa · Anuidade grátis</span></li>
           <li><b>Ocupação</b><span>Aposentado/servidor · Estudante · Carteira assinada/autônomo · Desempregado</span></li>
@@ -193,13 +166,49 @@ footer ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px;
         <p class="qnote">Barra "Etapa 1 de 3" + "Leva menos de 1 minuto". Pede nome e e-mail antes do resultado.</p>
       </div>
       <div class="comp">
+        <div class="comp-head"><h3>Poupdin<small>BR</small></h3><span class="pill yes">Monetiza</span></div>
+        <a class="comp-url" href="https://poupdin.com/quiz-emp-cow/" target="_blank" rel="noopener">poupdin.com/quiz-emp-cow/</a>
+        <ul>
+          <li>Quiz curto (valor → prazo) com barra de progresso.</li>
+          <li>Tela "Pronto! Encontramos…" antes do clique final.</li>
+          <li>Anúncio AdSeleto no CTA final, com aviso prévio na tela.</li>
+        </ul>
+      </div>
+      <div class="comp">
         <div class="comp-head"><h3>Utua BR<small>BR · empréstimo</small></h3><span class="pill unk">Monetização não verificada</span></div>
+        <a class="comp-url" href="https://utua.com.br/descubra/br-emp-quiz-utua-gg-qb/" target="_blank" rel="noopener">utua.com.br/descubra/br-emp-quiz-utua-gg-qb/</a>
         <ol class="qs">
           <li><b>De quanto você precisa?</b><span>4 faixas, de até R$1.000 a mais de R$15.000</span></li>
           <li><b>Em quanto tempo gostaria de pagar?</b><span>4 faixas, de 6 a mais de 24 meses</span></li>
           <li><b>Você está negativado?</b><span>Sim → P1 Simplic · Não → P1 Santander</span></li>
         </ol>
         <p class="qnote">Mesmo modelo da Utua USA: a última pergunta escolhe a oferta.</p>
+      </div>
+      <div class="comp">
+        <div class="comp-head"><h3>Creditis<small>BR</small></h3><span class="pill yes">Monetiza</span></div>
+        <a class="comp-url" href="https://mkt.creditis.com.br/?aff_sub=g-mktcreditis-pmax-v2-trafego" target="_blank" rel="noopener">mkt.creditis.com.br/?aff_sub=g-mktcreditis-pmax-v2-trafego</a>
+        <ul>
+          <li>Formulário direto (nome, e-mail, celular), sem quiz.</li>
+          <li>Pergunta qual benefício a pessoa quer: anuidade grátis, milhas, pontos, internacional, cashback ou consignado.</li>
+          <li>Interstitial e rewarded disparados no envio do formulário.</li>
+        </ul>
+      </div>
+      <div class="comp">
+        <div class="comp-head"><h3>Trouverfinan<small>FR</small></h3><span class="pill yes">Monetiza</span></div>
+        <a class="comp-url" href="https://trouverfinan.com/quiz/trf-fr-cc-qow/1" target="_blank" rel="noopener">trouverfinan.com/quiz/trf-fr-cc-qow/1</a>
+        <ul>
+          <li>Quiz de 2 perguntas, uma URL por etapa.</li>
+          <li>Pede nome e e-mail antes do resultado.</li>
+          <li>Rewarded como pedágio: "assista um anúncio para ver a recomendação".</li>
+        </ul>
+      </div>
+      <div class="comp">
+        <div class="comp-head"><h3>Eu Sou o Melhor<small>BR</small></h3><span class="pill yes">Monetiza</span></div>
+        <a class="comp-url" href="https://cartao.eusouomelhor.com.br/?aff_sub=g-eusoumelhor-display-limite" target="_blank" rel="noopener">cartao.eusouomelhor.com.br/?aff_sub=g-eusoumelhor-display-limite</a>
+        <ul>
+          <li>Interstitial GAM já definido na etapa 1, mais rewarded e offerwall.</li>
+          <li>Quiz de uma pergunta por página ("Quanto de limite você precisa?").</li>
+        </ul>
       </div>
     </div>
   </section>
