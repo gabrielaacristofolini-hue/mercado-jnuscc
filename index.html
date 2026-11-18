@@ -1,0 +1,217 @@
+<title>Presells de Cartão Concorrentes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: single 960px column; URLs analisadas → nossa presell (referência) → diferenças por concorrente → testes → limites */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #151a24;
+  --muted: #5b6475;
+  --line: #e2e5eb;
+  --accent: #2f4fd6;
+  --accent-soft: #e9edfc;
+  --yes: #137a4b; --yes-bg: #e3f4ec;
+  --no: #5b6475;  --no-bg: #eceef2;
+  --unk: #9a5b00; --unk-bg: #fbf0dc;
+  --f-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f131a; --surface: #161b24; --fg: #e7eaf0; --muted: #98a1b3; --line: #262d3a;
+    --accent: #8ea2ff; --accent-soft: #1d2440;
+    --yes: #5fd39b; --yes-bg: #13291f; --no: #a3abbb; --no-bg: #20262f; --unk: #f0b45a; --unk-bg: #2c2312;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f131a; --surface: #161b24; --fg: #e7eaf0; --muted: #98a1b3; --line: #262d3a;
+  --accent: #8ea2ff; --accent-soft: #1d2440;
+  --yes: #5fd39b; --yes-bg: #13291f; --no: #a3abbb; --no-bg: #20262f; --unk: #f0b45a; --unk-bg: #2c2312;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 960px; margin: 0 auto; padding-block: 48px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 48px; }
+header { display: grid; gap: 10px; }
+.eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+h1 { font-family: var(--f-display); font-weight: 600; font-size: clamp(28px, 4vw, 38px); line-height: 1.15; margin: 0; text-wrap: balance; }
+.lead { margin: 0; max-width: 62ch; color: var(--muted); font-size: 16px; }
+.lead b { color: var(--fg); font-weight: 600; }
+h2 { font-family: var(--f-display); font-weight: 600; font-size: 20px; margin: 0; text-wrap: balance; }
+section { display: grid; gap: 16px; min-width: 0; }
+.sub { margin: -8px 0 0; color: var(--muted); font-size: 14px; }
+code { font-family: var(--f-mono); font-size: 12.5px; background: var(--bg); padding: 1px 5px; border-radius: 4px; word-break: break-all; }
+
+/* URL list */
+.urls { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.urls li { display: grid; grid-template-columns: 150px 1fr auto; gap: 4px 16px; padding: 12px 18px; border-bottom: 1px solid var(--line); align-items: baseline; }
+.urls li:last-child { border-bottom: 0; }
+.urls li.ours { background: var(--accent-soft); }
+.urls .who { font-weight: 600; }
+.urls a { font-family: var(--f-mono); font-size: 13px; color: var(--accent); text-decoration: none; word-break: break-all; min-width: 0; }
+.urls a:hover, .urls a:focus-visible { text-decoration: underline; outline: none; }
+.mkt { font-size: 12px; color: var(--muted); white-space: nowrap; }
+
+.pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.yes { color: var(--yes); background: var(--yes-bg); }
+.no  { color: var(--no);  background: var(--no-bg); }
+.unk { color: var(--unk); background: var(--unk-bg); }
+
+/* Our baseline */
+.base { background: var(--accent-soft); border-radius: 10px; padding: 16px 18px; display: grid; gap: 8px; }
+.base h3 { margin: 0; font-size: 15px; font-weight: 600; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.base ul { margin: 0; padding-left: 18px; display: grid; gap: 2px; font-size: 14px; }
+
+/* Competitor cards */
+.comps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.comp { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.comp-head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.comp h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.comp h3 small { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 6px; }
+.comp ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14px; }
+.comp li::marker { color: var(--accent); }
+.comp.wide { grid-column: 1 / -1; border-color: var(--accent); }
+ol.qs { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; counter-reset: q; }
+ol.qs li { counter-increment: q; display: grid; grid-template-columns: 22px 1fr; gap: 0 10px; font-size: 14px; }
+ol.qs li::before { content: counter(q); grid-row: span 2; font-family: var(--f-display); font-weight: 600; font-size: 12px; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); margin-top: 1px; }
+ol.qs b { font-weight: 600; }
+ol.qs span { color: var(--muted); font-size: 13px; }
+.qnote { margin: 0; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 8px; }
+
+/* Tests */
+ol.tests { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; counter-reset: t; }
+ol.tests li { counter-increment: t; display: grid; grid-template-columns: 32px 1fr auto; gap: 4px 14px; padding: 14px 18px; border-bottom: 1px solid var(--line); align-items: start; }
+ol.tests li:last-child { border-bottom: 0; }
+ol.tests li::before { content: counter(t); font-family: var(--f-display); font-weight: 600; font-size: 15px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+ol.tests li:first-child::before { background: var(--accent); color: var(--surface); }
+.t-main { display: grid; gap: 2px; min-width: 0; }
+.t-main b { font-weight: 600; }
+.t-main span { font-size: 13px; color: var(--muted); }
+.effort { font-size: 12px; color: var(--muted); white-space: nowrap; padding-top: 3px; }
+.effort b { color: var(--fg); font-weight: 600; }
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+
+footer { border-top: 1px solid var(--line); padding-top: 20px; display: grid; gap: 8px; }
+footer h2 { font-size: 15px; }
+footer ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; display: grid; gap: 4px; }
+
+@media (max-width: 680px) {
+  .wrap { padding-block: 32px 48px; gap: 36px; }
+  .urls li { grid-template-columns: 1fr auto; }
+  .urls a { grid-column: 1 / -1; grid-row: 2; }
+  .comps { grid-template-columns: 1fr; }
+  ol.tests li { grid-template-columns: 32px 1fr; }
+  .effort { grid-column: 2; padding-top: 0; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Pesquisa de mercado · tráfego US · 18 nov 2026</div>
+    <h1>Presells de cartão: concorrentes x a nossa</h1>
+    <p class="lead">Os concorrentes usam o quiz para <b>qualificar o usuário e escolher a P1</b>: 3 a 4 perguntas curtas, e a última decide para qual oferta ele vai. No nosso, todas as respostas levam ao mesmo lugar.</p>
+  </header>
+
+  <section>
+    <h2>URLs analisadas</h2>
+    <ul class="urls">
+      <li class="ours"><span class="who">Nossa presell</span><a href="https://credit.thecredito.com.br/your-new-card-p1/" target="_blank" rel="noopener">credit.thecredito.com.br/your-new-card-p1/</a><span class="mkt">US · cartão</span></li>
+      <li><span class="who">Utua USA</span><a href="https://utua.com.br/descubra/usa-cc-quiz-utua-gg-qb/" target="_blank" rel="noopener">utua.com.br/descubra/usa-cc-quiz-utua-gg-qb/</a><span class="mkt">US · cartão</span></li>
+      <li><span class="who">Altotiete</span><a href="https://quiz.altotieteweb.com.br/" target="_blank" rel="noopener">quiz.altotieteweb.com.br/</a><span class="mkt">BR · cartão</span></li>
+      <li><span class="who">Poupdin</span><a href="https://poupdin.com/quiz-emp-cow/" target="_blank" rel="noopener">poupdin.com/quiz-emp-cow/</a><span class="mkt">BR · empréstimo</span></li>
+      <li><span class="who">Utua BR</span><a href="https://utua.com.br/descubra/br-emp-quiz-utua-gg-qb/" target="_blank" rel="noopener">utua.com.br/descubra/br-emp-quiz-utua-gg-qb/</a><span class="mkt">BR · empréstimo</span></li>
+      <li><span class="who">Creditis</span><a href="https://mkt.creditis.com.br/?aff_sub=g-mktcreditis-pmax-v2-trafego" target="_blank" rel="noopener">mkt.creditis.com.br/?aff_sub=g-mktcreditis-pmax-v2-trafego</a><span class="mkt">BR · cartão</span></li>
+      <li><span class="who">Trouverfinan</span><a href="https://trouverfinan.com/quiz/trf-fr-cc-qow/1" target="_blank" rel="noopener">trouverfinan.com/quiz/trf-fr-cc-qow/1</a><span class="mkt">FR · cartão</span></li>
+      <li><span class="who">Eu Sou o Melhor</span><a href="https://cartao.eusouomelhor.com.br/?aff_sub=g-eusoumelhor-display-limite" target="_blank" rel="noopener">cartao.eusouomelhor.com.br/?aff_sub=g-eusoumelhor-display-limite</a><span class="mkt">BR · cartão</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Diferenças entre os concorrentes e a nossa</h2>
+    <div class="base">
+      <h3>Nossa presell, como referência</h3>
+      <ul>
+        <li>Artigo longo em inglês com 3 botões de limite ($1k–$3k) e quiz de score.</li>
+        <li>O quiz mostra "Question 1 of 2", mas só tem uma pergunta (faixa de score).</li>
+        <li>Todas as respostas vão para a mesma URL. Não captura lead.</li>
+      </ul>
+    </div>
+    <div class="comps">
+      <div class="comp wide">
+        <div class="comp-head"><h3>Utua USA<small>US · concorrente direto</small></h3><span class="pill unk">Monetização não verificada</span></div>
+        <ol class="qs">
+          <li><b>What is most important in a credit card for you?</b><span>High limit · Immediate credit · No credit check · Free annuity · Airline miles · Cashback</span></li>
+          <li><b>Which group do you fit in?</b><span>Employee · Unemployed · Student · Entrepreneur · Retired · Self-employed · Public servant · Tenderer</span></li>
+          <li><b>What is your monthly income?</b><span>6 faixas, de "Up to U$ 1,200" a "Above U$ 10,000"</span></li>
+          <li><b>Are you in debt?</b><span>Yes → P1 do Milestone Card (crédito ruim) · No → P1 do Bilt Mastercard</span></li>
+        </ol>
+        <p class="qnote">Depois da última pergunta, pede o nome antes de redirecionar.</p>
+      </div>
+      <div class="comp">
+        <div class="comp-head"><h3>Eu Sou o Melhor<small>BR</small></h3><span class="pill yes">Monetiza</span></div>
+        <ul>
+          <li>Interstitial GAM já definido na etapa 1, mais rewarded e offerwall.</li>
+          <li>Quiz de uma pergunta por página ("Quanto de limite você precisa?").</li>
+        </ul>
+      </div>
+      <div class="comp">
+        <div class="comp-head"><h3>Creditis<small>BR</small></h3><span class="pill yes">Monetiza</span></div>
+        <ul>
+          <li>Formulário direto (nome, e-mail, celular), sem quiz.</li>
+          <li>Pergunta qual benefício a pessoa quer: anuidade grátis, milhas, pontos, internacional, cashback ou consignado.</li>
+          <li>Interstitial e rewarded disparados no envio do formulário.</li>
+        </ul>
+      </div>
+      <div class="comp">
+        <div class="comp-head"><h3>Poupdin<small>BR</small></h3><span class="pill yes">Monetiza</span></div>
+        <ul>
+          <li>Quiz curto (valor → prazo) com barra de progresso.</li>
+          <li>Tela "Pronto! Encontramos…" antes do clique final.</li>
+          <li>Anúncio AdSeleto no CTA final, com aviso prévio na tela.</li>
+        </ul>
+      </div>
+      <div class="comp">
+        <div class="comp-head"><h3>Trouverfinan<small>FR</small></h3><span class="pill yes">Monetiza</span></div>
+        <ul>
+          <li>Quiz de 2 perguntas, uma URL por etapa.</li>
+          <li>Pede nome e e-mail antes do resultado.</li>
+          <li>Rewarded como pedágio: "assista um anúncio para ver a recomendação".</li>
+        </ul>
+      </div>
+      <div class="comp">
+        <div class="comp-head"><h3>Altotiete<small>BR</small></h3><span class="pill no">Não monetiza</span></div>
+        <ol class="qs">
+          <li><b>O que é mais importante para você?</b><span>Fácil aprovação · Limite alto · Sem consulta SPC/Serasa · Anuidade grátis</span></li>
+          <li><b>Ocupação</b><span>Aposentado/servidor · Estudante · Carteira assinada/autônomo · Desempregado</span></li>
+          <li><b>Está negativado?</b><span>A resposta muda o destino</span></li>
+        </ol>
+        <p class="qnote">Barra "Etapa 1 de 3" + "Leva menos de 1 minuto". Pede nome e e-mail antes do resultado.</p>
+      </div>
+      <div class="comp">
+        <div class="comp-head"><h3>Utua BR<small>BR · empréstimo</small></h3><span class="pill unk">Monetização não verificada</span></div>
+        <ol class="qs">
+          <li><b>De quanto você precisa?</b><span>4 faixas, de até R$1.000 a mais de R$15.000</span></li>
+          <li><b>Em quanto tempo gostaria de pagar?</b><span>4 faixas, de 6 a mais de 24 meses</span></li>
+          <li><b>Você está negativado?</b><span>Sim → P1 Simplic · Não → P1 Santander</span></li>
+        </ol>
+        <p class="qnote">Mesmo modelo da Utua USA: a última pergunta escolhe a oferta.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <h2>Limites da análise</h2>
+    <ul>
+      <li>As páginas da Utua ficaram bloqueadas pelo Cloudflare. As perguntas e os destinos vieram da configuração do quiz que está no HTML, mas os anúncios não puderam ser verificados.</li>
+      <li>Nenhum formulário foi enviado. O que acontece depois vem do código da página ou do aviso na tela.</li>
+      <li>O acesso foi feito do Brasil, então o fill de anúncios para tráfego dos EUA pode ser diferente.</li>
+    </ul>
+  </footer>
+</div>
